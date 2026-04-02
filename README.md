@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-# 郭介融說
-你在狗叫什麼
-#### 原神啟動
-  你在狗叫什麼
-  建穎要吐了
-=======
 # 🛡️ CyberGuard
 
 ## 開發動機
@@ -132,4 +125,3 @@ sudo systemctl enable cyberguard
 
 ### 成果
 <img src="picture/IMG_0696.jpg" width="80%" alt="Telegram Bot QR Code">
->>>>>>> jyc
