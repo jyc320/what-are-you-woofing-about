@@ -1,0 +1,751 @@
+{
+  "name": "CyberGuard",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "c02f3730-6dda-4f04-a6c9-213e71e2e17a",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -1072,
+        1152
+      ],
+      "webhookId": "請自行更改為您的WebhookID",
+      "credentials": {
+        "telegramApi": {
+          "id": "請自行更改為您的Telegram認證ID",
+          "name": "Telegram for CyberGuard"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "8dfa6a79-5b88-4a94-9633-ad33cd92c712",
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/stop",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "/start",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "366c7bdd-c65d-42a6-9a8a-384cb8f046f3"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "@",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "91696c2f-1750-4297-8500-be9dcf51701a"
+                  },
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "^[0-9]{8,15}$",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    },
+                    "id": "8bb063f1-d1b9-4169-add8-ebc607de6075"
+                  }
+                ],
+                "combinator": "or"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "http",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "1fffc465-a444-4850-a671-32f92e549b73"
+                  },
+                  {
+                    "leftValue": "={{ $json.message.text }}",
+                    "rightValue": "[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}",
+                    "operator": {
+                      "type": "string",
+                      "operation": "regex"
+                    },
+                    "id": "f7ffc6cd-b899-479c-9e63-09a475a6df76"
+                  }
+                ],
+                "combinator": "or"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b585d089-51ad-46b7-bd3e-e8775a860e14",
+      "name": "自動分流",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -848,
+        1120
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "**【CyberGuard Pro 資安威脅檢測系統】**\n\n本系統整合多項全球威脅情資來源（包含 VirusTotal、AbuseIPDB 與主流外洩資料庫），提供自動化的安全掃描與情資分析服務。\n\n**▌支援檢測項目與輸入格式**\n\n**1. 網域與 IP 信譽分析**\n- 功能：檢測惡意活動、釣魚特徵與伺服器信譽評分。\n- 格式：請直接輸入 URL、網域或 IP 地址。\n- 範例：`google.com` 或 `8.8.8.8`\n\n**2. 憑證與個資外洩檢測**\n- 功能：比對歷史外洩資料庫，確認該帳號或號碼是否曾遭遇密碼外洩事件。\n- 格式：請直接輸入 Email 或手機號碼。\n- 範例：`test@example.com` 或 `0912345678`\n\n**▌操作說明**\n請於下方對話框直接輸入欲檢測之目標，系統將自動解析格式並回傳深度掃描報告。",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "887078a9-ec09-4ccb-8fdb-f0d9b2a34fae",
+      "name": "歡迎訊息",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -624,
+        1056
+      ],
+      "webhookId": "請自行更改為您的WebhookID",
+      "credentials": {
+        "telegramApi": {
+          "id": "請自行更改為您的Telegram認證ID",
+          "name": "Telegram for CyberGuard"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://請自行更改為您的API伺服器IP:8000/api/check_leak",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\n \"content\": \"{{ $('Telegram Trigger').item.json.message.text }}\"\n}",
+        "options": {}
+      },
+      "id": "bd880236-65d2-4a73-885c-7ef3cea22fa7",
+      "name": "個資掃描 API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -624,
+        1248
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://請自行更改為您的API伺服器IP:8000/api/scan_url",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\n \"url\": \"{{ $('Telegram Trigger').item.json.message.text }}\"\n}",
+        "options": {}
+      },
+      "id": "7212d7b7-f13e-4428-918b-ffbe9e3c3ad9",
+      "name": "網址掃描 API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.1,
+      "position": [
+        -624,
+        1440
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "71aafe10-32ee-4682-9702-9f9d3234a7f8",
+      "name": "回傳個資結果",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -400,
+        1248
+      ],
+      "webhookId": "請自行更改為您的WebhookID",
+      "credentials": {
+        "telegramApi": {
+          "id": "請自行更改為您的Telegram認證ID",
+          "name": "Telegram for CyberGuard"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.message }}",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "id": "a6c62196-80ea-4013-b5d2-d47d77e37b9e",
+      "name": "回傳網址結果",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -400,
+        1440
+      ],
+      "webhookId": "請自行更改為您的WebhookID",
+      "credentials": {
+        "telegramApi": {
+          "id": "請自行更改為您的Telegram認證ID",
+          "name": "Telegram for CyberGuard"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://www.ithome.com.tw/rss/security",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -848,
+        1664
+      ],
+      "id": "d4d78d1e-625a-434e-bc01-f43e6c569a54",
+      "name": "RSS Read"
+    },
+    {
+      "parameters": {
+        "maxItems": 10
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -624,
+        1664
+      ],
+      "id": "9924818c-2474-4316-ba21-79f7838a7900",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "aggregate": "aggregateAllItemData",
+        "destinationFieldName": "news_list",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -400,
+        1664
+      ],
+      "id": "85067c5b-be8f-4b60-a282-c2ad8dc2ab1d",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 59 9 * * * "
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -1072,
+        1664
+      ],
+      "id": "88e4e784-84d4-4059-8c5c-ffdd56a3f246",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=你是一位專業且客觀的資安小編。你需要推播資安新聞給本專案的訂閱者，目的在提昇他們的資安視野與防護意識。\n\n以下是今天最新的資安新聞 JSON 資料：\n{{ JSON.stringify($json.news_list) }}\n\n【任務要求】\n請從中精心挑選 3 則不同面向的新聞，並嚴格依照以下三個類別「各挑選一則」：\n1. 【大眾焦點】：挑選一則與民眾日常起居、個人隱私、常見 APP 或新型態詐騙最相關的事件。\n2. 【產業趨勢】：挑選一則近期最受關注的重大資安發展，如知名企業遭駭、勒索軟體動態、或新興科技（如AI）的資安議題。\n3. 【技術深潛】：挑選一則偏向硬核技術的漏洞通報（如 CVE）、系統修補建議、或惡意軟體底層分析。\n\n【撰寫規範】\n請用客觀、易懂但不失專業的文字，為這 3 則新聞各寫一段 50 字以內的摘要，清楚點出「威脅重點」及「防護建議」。\n絕對不能修改或虛構原本的「新聞標題」與「新聞連結」。\n\n【輸出格式】\n請務必嚴格按照以下 Telegram Markdown 格式輸出，不要包含任何開場白、結語或額外廢話：\n\n🛡️ **【 CyberGuard 每日資安快報 】** 🛡️\n🗓️ *每日為您精選最重要的資安動態*\n\n➖➖➖➖➖➖➖➖➖➖\n\n🧑🤝🧑 **｜大眾焦點｜**\n📌 **[完整新聞標題 1]**\n💬 *[你的白話文摘要]*\n🔗 [閱讀全文]([原本的新聞連結 1])\n\n📈 **｜產業趨勢｜**\n📌 **[完整新聞標題 2]**\n📊 *[你的客觀摘要]*\n🔗 [閱讀全文]([原本的新聞連結 2])\n\n💻 **｜技術深潛｜**\n📌 **[完整新聞標題 3]**\n⚙️ *[你的專業摘要]*\n🔗 [閱讀全文]([原本的新聞連結 3])\n\n➖➖➖➖➖➖➖➖➖➖\n🔕 若需取消訂閱，請輸入 /stop"
+            }
+          ]
+        },
+        "builtInTools": {},
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -176,
+        1664
+      ],
+      "id": "5d13729c-a392-4bab-8610-3ca28c0f2a67",
+      "name": "Message a model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "請自行更改為您的Gemini認證ID",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "請自行更改為您的Google試算表ID",
+          "mode": "list",
+          "cachedResultName": "Cyberguard Broadcast",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google試算表ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "工作表1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google試算表ID/edit#gid=0"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        176,
+        1664
+      ],
+      "id": "9c16d8ce-1573-40bc-b17b-19a92f567b6e",
+      "name": "Get row(s) in sheet",
+      "credentials": {
+        "googleApi": {
+          "id": "請自行更改為您的Google認證ID",
+          "name": "Google Service Account for Cyber"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "documentId": {
+          "__rl": true,
+          "value": "請自行更改為您的Google試算表ID",
+          "mode": "list",
+          "cachedResultName": "Cyberguard Broadcast",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google試算表ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "工作表1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google試算表ID/edit#gid=0"
+        },
+        "filtersUI": {
+          "values": [
+            {
+              "lookupColumn": "TelegramID",
+              "lookupValue": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -624,
+        864
+      ],
+      "id": "a1db57a6-411f-4823-ac73-06331903ab40",
+      "name": "取得參數",
+      "credentials": {
+        "googleApi": {
+          "id": "請自行更改為您的Google認證ID",
+          "name": "Google Service Account for Cyber"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "delete",
+        "documentId": {
+          "__rl": true,
+          "value": "請自行更改為您的Google試算表ID",
+          "mode": "list",
+          "cachedResultName": "Cyberguard Broadcast",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google試算表ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "工作表1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google試算表ID/edit#gid=0"
+        },
+        "startIndex": "={{ $json.row_number }}"
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -400,
+        864
+      ],
+      "id": "91a485bf-e747-462e-891e-8391481a2484",
+      "name": "刪除參數",
+      "credentials": {
+        "googleApi": {
+          "id": "請自行更改為您的Google認證ID",
+          "name": "Google Service Account for Cyber"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "authentication": "serviceAccount",
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "請自行更改為您的Google試算表ID",
+          "mode": "list",
+          "cachedResultName": "Cyberguard Broadcast",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google試算表ID/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "工作表1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google試算表ID/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "TelegramID": "={{ $('Telegram Trigger').item.json.message.chat.id }}"
+          },
+          "matchingColumns": [
+            "TelegramID"
+          ],
+          "schema": [
+            {
+              "id": "TelegramID",
+              "displayName": "TelegramID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        -400,
+        1056
+      ],
+      "id": "79d58334-7800-4bf8-8d07-96f60f44a907",
+      "name": "預設加入推播清單",
+      "credentials": {
+        "googleApi": {
+          "id": "請自行更改為您的Google認證ID",
+          "name": "Google Service Account for Cyber"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=📴 **【 CyberGuard 退訂成功 】**  \n您已從我們的每日資安推送清單中移除了。\n從明天起，將**不會**再收到任何新聞。\n💡** 若您改變心意，只需隨時輸入 `/start` 即可重新開啟服務。",
+        "additionalFields": {
+          "parse_mode": "Markdown"
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -192,
+        864
+      ],
+      "id": "8faf6239-f901-4568-a953-137e8ecf0bce",
+      "name": "回傳結果",
+      "webhookId": "請自行更改為您的WebhookID",
+      "credentials": {
+        "telegramApi": {
+          "id": "請自行更改為您的Telegram認證ID",
+          "name": "Telegram for CyberGuard"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{$json.TelegramID}}",
+        "text": "={{ $('Message a model').item.json.content.parts[0].text }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        400,
+        1664
+      ],
+      "id": "04e4734b-be1e-4f4f-bb9a-403c7ff6606a",
+      "name": "推播新聞",
+      "webhookId": "請自行更改為您的WebhookID",
+      "credentials": {
+        "telegramApi": {
+          "id": "請自行更改為您的Telegram認證ID",
+          "name": "Telegram for CyberGuard"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "自動分流",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "自動分流": {
+      "main": [
+        [
+          {
+            "node": "取得參數",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "歡迎訊息",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "個資掃描 API",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "網址掃描 API",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "個資掃描 API": {
+      "main": [
+        [
+          {
+            "node": "回傳個資結果",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "網址掃描 API": {
+      "main": [
+        [
+          {
+            "node": "回傳網址結果",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Read": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "RSS Read",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "歡迎訊息": {
+      "main": [
+        [
+          {
+            "node": "預設加入推播清單",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Get row(s) in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get row(s) in sheet": {
+      "main": [
+        [
+          {
+            "node": "推播新聞",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "取得參數": {
+      "main": [
+        [
+          {
+            "node": "刪除參數",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "刪除參數": {
+      "main": [
+        [
+          {
+            "node": "回傳結果",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "89d5dde9-481f-4fa6-b6ed-ba7c0916b148",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "請自行更改為您的n8n實例ID"
+  },
+  "id": "請自行更改為您的工作流ID",
+  "tags": []
+}
