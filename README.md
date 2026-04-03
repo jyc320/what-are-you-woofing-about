@@ -124,4 +124,4 @@ sudo systemctl enable cyberguard
 上述步驟完成後即可與 Telegram Bot 互動
 
 ### 成果
-<img src="picture/IMG_0696.jpg" width="90%" alt="Telegram Bot QR Code">
+<img src="picture/IMG_0696.jpg" alt="n8n workflow">
