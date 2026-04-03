@@ -13,13 +13,13 @@
       "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1.1,
       "position": [
-        -1072,
-        1152
+        -1264,
+        992
       ],
       "webhookId": "請自行更改為您的WebhookID",
       "credentials": {
         "telegramApi": {
-          "id": "請自行更改為您的Telegram認證ID",
+          "id": "請自行更改為您的憑證ID",
           "name": "Telegram for CyberGuard"
         }
       }
@@ -124,7 +124,7 @@
                   },
                   {
                     "leftValue": "={{ $json.message.text }}",
-                    "rightValue": "[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}",
+                    "rightValue": "=([a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}|[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3})",
                     "operator": {
                       "type": "string",
                       "operation": "regex"
@@ -144,8 +144,8 @@
       "type": "n8n-nodes-base.switch",
       "typeVersion": 3.2,
       "position": [
-        -848,
-        1120
+        -1040,
+        960
       ]
     },
     {
@@ -161,13 +161,13 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        -624,
-        1056
+        -816,
+        896
       ],
       "webhookId": "請自行更改為您的WebhookID",
       "credentials": {
         "telegramApi": {
-          "id": "請自行更改為您的Telegram認證ID",
+          "id": "請自行更改為您的憑證ID",
           "name": "Telegram for CyberGuard"
         }
       }
@@ -175,7 +175,7 @@
     {
       "parameters": {
         "method": "POST",
-        "url": "http://請自行更改為您的API伺服器IP:8000/api/check_leak",
+        "url": "http://請自行更改為您的API位址/api/check_leak",
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
@@ -187,14 +187,14 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
       "position": [
-        -624,
-        1248
+        -816,
+        1088
       ]
     },
     {
       "parameters": {
         "method": "POST",
-        "url": "http://請自行更改為您的API伺服器IP:8000/api/scan_url",
+        "url": "http://請自行更改為您的API位址/api/scan_url",
         "sendBody": true,
         "contentType": "raw",
         "rawContentType": "application/json",
@@ -206,8 +206,8 @@
       "type": "n8n-nodes-base.httpRequest",
       "typeVersion": 4.1,
       "position": [
-        -624,
-        1440
+        -816,
+        1280
       ]
     },
     {
@@ -223,13 +223,13 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        -400,
-        1248
+        -592,
+        1088
       ],
       "webhookId": "請自行更改為您的WebhookID",
       "credentials": {
         "telegramApi": {
-          "id": "請自行更改為您的Telegram認證ID",
+          "id": "請自行更改為您的憑證ID",
           "name": "Telegram for CyberGuard"
         }
       }
@@ -247,13 +247,13 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        -400,
-        1440
+        -592,
+        1280
       ],
       "webhookId": "請自行更改為您的WebhookID",
       "credentials": {
         "telegramApi": {
-          "id": "請自行更改為您的Telegram認證ID",
+          "id": "請自行更改為您的憑證ID",
           "name": "Telegram for CyberGuard"
         }
       }
@@ -266,8 +266,8 @@
       "type": "n8n-nodes-base.rssFeedRead",
       "typeVersion": 1.2,
       "position": [
-        -848,
-        1664
+        -1040,
+        1504
       ],
       "id": "d4d78d1e-625a-434e-bc01-f43e6c569a54",
       "name": "RSS Read"
@@ -279,8 +279,8 @@
       "type": "n8n-nodes-base.limit",
       "typeVersion": 1,
       "position": [
-        -624,
-        1664
+        -816,
+        1504
       ],
       "id": "9924818c-2474-4316-ba21-79f7838a7900",
       "name": "Limit"
@@ -294,8 +294,8 @@
       "type": "n8n-nodes-base.aggregate",
       "typeVersion": 1,
       "position": [
-        -400,
-        1664
+        -592,
+        1504
       ],
       "id": "85067c5b-be8f-4b60-a282-c2ad8dc2ab1d",
       "name": "Aggregate"
@@ -306,7 +306,7 @@
           "interval": [
             {
               "field": "cronExpression",
-              "expression": "0 59 9 * * * "
+              "expression": "30 59 9 * * * "
             }
           ]
         }
@@ -314,8 +314,8 @@
       "type": "n8n-nodes-base.scheduleTrigger",
       "typeVersion": 1.3,
       "position": [
-        -1072,
-        1664
+        -1264,
+        1504
       ],
       "id": "88e4e784-84d4-4059-8c5c-ffdd56a3f246",
       "name": "Schedule Trigger"
@@ -331,7 +331,7 @@
         "messages": {
           "values": [
             {
-              "content": "=你是一位專業且客觀的資安小編。你需要推播資安新聞給本專案的訂閱者，目的在提昇他們的資安視野與防護意識。\n\n以下是今天最新的資安新聞 JSON 資料：\n{{ JSON.stringify($json.news_list) }}\n\n【任務要求】\n請從中精心挑選 3 則不同面向的新聞，並嚴格依照以下三個類別「各挑選一則」：\n1. 【大眾焦點】：挑選一則與民眾日常起居、個人隱私、常見 APP 或新型態詐騙最相關的事件。\n2. 【產業趨勢】：挑選一則近期最受關注的重大資安發展，如知名企業遭駭、勒索軟體動態、或新興科技（如AI）的資安議題。\n3. 【技術深潛】：挑選一則偏向硬核技術的漏洞通報（如 CVE）、系統修補建議、或惡意軟體底層分析。\n\n【撰寫規範】\n請用客觀、易懂但不失專業的文字，為這 3 則新聞各寫一段 50 字以內的摘要，清楚點出「威脅重點」及「防護建議」。\n絕對不能修改或虛構原本的「新聞標題」與「新聞連結」。\n\n【輸出格式】\n請務必嚴格按照以下 Telegram Markdown 格式輸出，不要包含任何開場白、結語或額外廢話：\n\n🛡️ **【 CyberGuard 每日資安快報 】** 🛡️\n🗓️ *每日為您精選最重要的資安動態*\n\n➖➖➖➖➖➖➖➖➖➖\n\n🧑🤝🧑 **｜大眾焦點｜**\n📌 **[完整新聞標題 1]**\n💬 *[你的白話文摘要]*\n🔗 [閱讀全文]([原本的新聞連結 1])\n\n📈 **｜產業趨勢｜**\n📌 **[完整新聞標題 2]**\n📊 *[你的客觀摘要]*\n🔗 [閱讀全文]([原本的新聞連結 2])\n\n💻 **｜技術深潛｜**\n📌 **[完整新聞標題 3]**\n⚙️ *[你的專業摘要]*\n🔗 [閱讀全文]([原本的新聞連結 3])\n\n➖➖➖➖➖➖➖➖➖➖\n🔕 若需取消訂閱，請輸入 /stop"
+              "content": "=你是一位專業且客觀的資安小編。你需要推播資安新聞給本專案的訂閱者，目的在提昇他們的資安視野與防護意識。\n\n以下是今天最新的資安新聞 JSON 資料：\n{{ JSON.stringify($json.news_list) }}\n\n【任務要求】\n請從中精心挑選 3 則不同面向的新聞，並嚴格依照以下三個類別「各挑選一則」：\n1. 【大眾焦點】：挑選一則與民眾日常起居、個人隱私、常見 APP 或新型態詐騙最相關的事件。\n2. 【產業趨勢】：挑選一則近期最受關注的重大資安發展，如知名企業遭駭、勒索軟體動態、或新興科技（如AI）的資安議題。\n3. 【技術深潛】：挑選一則偏向硬核技術的漏洞通報（如 CVE）、系統修補建議、或惡意軟體底層分析。\n\n【撰寫規範】\n請用客觀、易懂但不失專業的文字，為這 3 則新聞各寫一段 50 字以內的摘要，清楚點出「威脅重點」及「防護建議」。\n絕對不能修改或虛構原本的「新聞標題」與「新聞連結」。\n\n【輸出格式】\n請務必嚴格按照以下 Telegram Markdown 格式輸出，不要包含任何開場白、結語或額外廢話：\n\n🛡️ **【 CyberGuard 每日資安快報 】** 🛡️\n🗓️ *每日為您精選最重要的資安動態*\n\n\n🧑🤝🧑 **｜大眾焦點｜**\n📌 **[完整新聞標題 1]**\n💬 *[你的白話文摘要]*\n🔗 [閱讀全文]([原本的新聞連結 1])\n\n📈 **｜產業趨勢｜**\n📌 **[完整新聞標題 2]**\n📊 *[你的客觀摘要]*\n🔗 [閱讀全文]([原本的新聞連結 2])\n\n💻 **｜技術深潛｜**\n📌 **[完整新聞標題 3]**\n⚙️ *[你的專業摘要]*\n🔗 [閱讀全文]([原本的新聞連結 3])\n\n\n🔕 若需取消訂閱，請輸入 /stop"
             }
           ]
         },
@@ -341,14 +341,14 @@
       "type": "@n8n/n8n-nodes-langchain.googleGemini",
       "typeVersion": 1.1,
       "position": [
-        -176,
-        1664
+        -368,
+        1504
       ],
       "id": "5d13729c-a392-4bab-8610-3ca28c0f2a67",
       "name": "Message a model",
       "credentials": {
         "googlePalmApi": {
-          "id": "請自行更改為您的Gemini認證ID",
+          "id": "請自行更改為您的憑證ID",
           "name": "Google Gemini(PaLM) Api account"
         }
       }
@@ -358,31 +358,31 @@
         "authentication": "serviceAccount",
         "documentId": {
           "__rl": true,
-          "value": "請自行更改為您的Google試算表ID",
+          "value": "請自行更改為您的Google_Sheet_ID",
           "mode": "list",
           "cachedResultName": "Cyberguard Broadcast",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google試算表ID/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google_Sheet_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "工作表1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google試算表ID/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google_Sheet_ID/edit#gid=0"
         },
         "options": {}
       },
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        176,
-        1664
+        -16,
+        1504
       ],
       "id": "9c16d8ce-1573-40bc-b17b-19a92f567b6e",
       "name": "Get row(s) in sheet",
       "credentials": {
         "googleApi": {
-          "id": "請自行更改為您的Google認證ID",
+          "id": "請自行更改為您的憑證ID",
           "name": "Google Service Account for Cyber"
         }
       }
@@ -392,17 +392,17 @@
         "authentication": "serviceAccount",
         "documentId": {
           "__rl": true,
-          "value": "請自行更改為您的Google試算表ID",
+          "value": "請自行更改為您的Google_Sheet_ID",
           "mode": "list",
           "cachedResultName": "Cyberguard Broadcast",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google試算表ID/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google_Sheet_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "工作表1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google試算表ID/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google_Sheet_ID/edit#gid=0"
         },
         "filtersUI": {
           "values": [
@@ -417,14 +417,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -624,
-        864
+        -816,
+        704
       ],
       "id": "a1db57a6-411f-4823-ac73-06331903ab40",
       "name": "取得參數",
       "credentials": {
         "googleApi": {
-          "id": "請自行更改為您的Google認證ID",
+          "id": "請自行更改為您的憑證ID",
           "name": "Google Service Account for Cyber"
         }
       }
@@ -435,31 +435,31 @@
         "operation": "delete",
         "documentId": {
           "__rl": true,
-          "value": "請自行更改為您的Google試算表ID",
+          "value": "請自行更改為您的Google_Sheet_ID",
           "mode": "list",
           "cachedResultName": "Cyberguard Broadcast",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google試算表ID/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google_Sheet_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "工作表1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google試算表ID/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google_Sheet_ID/edit#gid=0"
         },
         "startIndex": "={{ $json.row_number }}"
       },
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -400,
-        864
+        -592,
+        704
       ],
       "id": "91a485bf-e747-462e-891e-8391481a2484",
       "name": "刪除參數",
       "credentials": {
         "googleApi": {
-          "id": "請自行更改為您的Google認證ID",
+          "id": "請自行更改為您的憑證ID",
           "name": "Google Service Account for Cyber"
         }
       }
@@ -470,17 +470,17 @@
         "operation": "append",
         "documentId": {
           "__rl": true,
-          "value": "請自行更改為您的Google試算表ID",
+          "value": "請自行更改為您的Google_Sheet_ID",
           "mode": "list",
           "cachedResultName": "Cyberguard Broadcast",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google試算表ID/edit?usp=drivesdk"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google_Sheet_ID/edit?usp=drivesdk"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
           "mode": "list",
           "cachedResultName": "工作表1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google試算表ID/edit#gid=0"
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/請自行更改為您的Google_Sheet_ID/edit#gid=0"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -510,14 +510,14 @@
       "type": "n8n-nodes-base.googleSheets",
       "typeVersion": 4.7,
       "position": [
-        -400,
-        1056
+        -592,
+        896
       ],
       "id": "79d58334-7800-4bf8-8d07-96f60f44a907",
       "name": "預設加入推播清單",
       "credentials": {
         "googleApi": {
-          "id": "請自行更改為您的Google認證ID",
+          "id": "請自行更改為您的憑證ID",
           "name": "Google Service Account for Cyber"
         }
       }
@@ -525,7 +525,7 @@
     {
       "parameters": {
         "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
-        "text": "=📴 **【 CyberGuard 退訂成功 】**  \n您已從我們的每日資安推送清單中移除了。\n從明天起，將**不會**再收到任何新聞。\n💡** 若您改變心意，只需隨時輸入 `/start` 即可重新開啟服務。",
+        "text": "=📴 **【 CyberGuard 退訂成功 】** \n您已從我們的每日資安推送清單中移除了。\n從明天起，將**不會**再收到任何新聞。\n💡** 若您改變心意，只需隨時輸入 `/start` 即可重新開啟服務。",
         "additionalFields": {
           "parse_mode": "Markdown"
         }
@@ -533,15 +533,15 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        -192,
-        864
+        -368,
+        704
       ],
       "id": "8faf6239-f901-4568-a953-137e8ecf0bce",
       "name": "回傳結果",
       "webhookId": "請自行更改為您的WebhookID",
       "credentials": {
         "telegramApi": {
-          "id": "請自行更改為您的Telegram認證ID",
+          "id": "請自行更改為您的憑證ID",
           "name": "Telegram for CyberGuard"
         }
       }
@@ -555,15 +555,15 @@
       "type": "n8n-nodes-base.telegram",
       "typeVersion": 1.2,
       "position": [
-        400,
-        1664
+        208,
+        1504
       ],
       "id": "04e4734b-be1e-4f4f-bb9a-403c7ff6606a",
       "name": "推播新聞",
       "webhookId": "請自行更改為您的WebhookID",
       "credentials": {
         "telegramApi": {
-          "id": "請自行更改為您的Telegram認證ID",
+          "id": "請自行更改為您的憑證ID",
           "name": "Telegram for CyberGuard"
         }
       }
@@ -741,11 +741,11 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "89d5dde9-481f-4fa6-b6ed-ba7c0916b148",
+  "versionId": "d925e3b8-af1e-4e77-833f-4d5172f06a9c",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "請自行更改為您的n8n實例ID"
+    "instanceId": "請自行更改為您的InstanceID"
   },
-  "id": "請自行更改為您的工作流ID",
+  "id": "LzjpLEnnuueHSXTe",
   "tags": []
 }

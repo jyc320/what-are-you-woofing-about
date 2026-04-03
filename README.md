@@ -26,7 +26,7 @@
 
 ## 開發者架設的 Telegram Bot 服務
 
-<img src="picture/IMG_0695.jpg" width="30%" alt="Telegram Bot QR Code">
+<img src="picture/IMG_0695.jpg" width="40%" alt="Telegram Bot QR Code">
 
 **👉 [點擊這裡加入 Telegram Bot](https://t.me/csecg_bot)**
 
@@ -124,4 +124,4 @@ sudo systemctl enable cyberguard
 上述步驟完成後即可與 Telegram Bot 互動
 
 ### 成果
-<img src="picture/IMG_0696.jpg" width="80%" alt="Telegram Bot QR Code">
+<img src="picture/IMG_0696.jpg" width="90%" alt="Telegram Bot QR Code">
