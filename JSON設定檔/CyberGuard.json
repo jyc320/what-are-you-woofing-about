@@ -551,7 +551,7 @@
     },
     {
       "parameters": {
-        "chatId": "=請自行更改為你的Chat ID",
+        "chatId": "={{ $json.TelegramID }}",
         "text": "={{ $('Message a model').item.json.content.parts[0].text }}",
         "additionalFields": {}
       },
